@@ -1,6 +1,14 @@
 <div class="overflow-x-auto container">
+
+  @if (showToasteVar) {
+  <div class="toast toast-top toast-end">
+    <div class="alert" [class]="showToastMessageColor">
+      <span>{{showToastMessage}}</span>
+    </div>
+  </div>
+}
   <div class="">
-    <form  class="" (submit)="addTodo()">
+    <form  class="">
       <input
         type="text"
         name="text"
@@ -16,10 +24,10 @@
         class="input w-full max-w-xs"
       />
       @if (isEdit) {
-        <button type="submit" (onclick)="updateTodo()" class="btn btn-success">Update</button>
+        <button type="submit" (click)="updateTodo()" class="btn btn-success">Update</button>
       }
       @else {
-        <button type="submit" (onclick)="addTodo()" class="btn btn-primary">Add</button>
+        <button type="submit" (click)="addTodo()" class="btn btn-primary">Add</button>
       }
     </form>
   </div>
@@ -41,7 +49,7 @@
         <th>{{ todo.date }}</th>
         <th class="flex">
           <button  (click)="editTodo(todo.id)" class="btn btn-sm btn-warning">Edit</button>
-          <button class="btn btn-sm ms-4 btn-error">Delete</button>
+          <button  (click)="deleteTodo(todo.id)" class="btn btn-sm ms-4 btn-error">Delete</button>
         </th>
       </tr>
       } @empty {
