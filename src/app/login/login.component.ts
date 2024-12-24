@@ -16,6 +16,7 @@ import { LoginResponse, LoginService } from './login.service';
 export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
+  loading: boolean = false;
 
 
   constructor(
@@ -34,6 +35,7 @@ get email() { return this.loginForm.get('email'); }
  get password() { return this.loginForm.get('password'); }
 
  onSubmit() {
+  this.loading = true;
   if (this.loginForm.valid) {
     const { email, password } = this.loginForm.value;
     this.loginService.login({ email, password }).subscribe({
@@ -49,16 +51,20 @@ get email() { return this.loginForm.get('email'); }
             serverError: error.error.message
           });
         }
-
-      }
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
+
   }
+  this.loading = false;
 }
 
 ngOnInit() {
   const token = localStorage.getItem('auth-token');
   if (token) {
-    this.router.navigate(['/']); 
+    this.router.navigate(['/']);
   }
 }
 

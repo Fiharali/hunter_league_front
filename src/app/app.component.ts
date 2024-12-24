@@ -13,7 +13,8 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 export class AppComponent {
   constructor(private router: Router) {}
 
-  get isLoginPage(): boolean {
-    return this.router.url === '/login';
+
+  isAuthRoute(): boolean {
+    return this.router.url.includes('/login');
   }
  }
