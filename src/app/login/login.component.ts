@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators , ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginResponse, LoginService } from './login.service';
-
-
 
 
 @Component({
@@ -15,7 +13,7 @@ import { LoginResponse, LoginService } from './login.service';
 
 
 
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
 
@@ -27,12 +25,12 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       remember: [false]
     });
   }
 
-  get email() { return this.loginForm.get('email'); }
+get email() { return this.loginForm.get('email'); }
  get password() { return this.loginForm.get('password'); }
 
  onSubmit() {
@@ -40,12 +38,9 @@ export class LoginComponent {
     const { email, password } = this.loginForm.value;
     this.loginService.login({ email, password }).subscribe({
       next: (response : LoginResponse) => {
-
-        console.log('Login successful', response);
-
        if (response && response.token) {
-         localStorage.setItem('auth-token', response.token);
-
+          localStorage.setItem('auth-token', response.token);
+          this.router.navigate(['/']);
        }
       },
       error: (error) => {
@@ -57,6 +52,13 @@ export class LoginComponent {
 
       }
     });
+  }
+}
+
+ngOnInit() {
+  const token = localStorage.getItem('auth-token');
+  if (token) {
+    this.router.navigate(['/']); 
   }
 }
 
