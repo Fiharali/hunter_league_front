@@ -1,1 +1,71 @@
-<p>user works!</p>
+
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dar:text-gray-400">
+      <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dar:text-white dar:bg-gray-800">
+         USERS LIST
+      </caption>
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dar:bg-gray-700 dar:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                 CIN
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  NAME
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  EMAIL
+              </th>
+              <th scope="col" class="px-6 py-3">
+                ROLE
+            </th>
+              <th scope="col" class="px-6 py-3">
+                  ACTION
+              </th>
+
+          </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track $index) {
+          <tr class="bg-white border-b dar:bg-gray-800 dar:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dar:text-white">
+                 {{ user.cin }}
+              </th>
+              <td class="px-6 py-4">
+                  {{ user.firstName }} {{ user.lastName }}
+              </td>
+              <td class="px-6 py-4">
+                  {{ user.email }}
+              </td>
+              <td class="px-6 py-4">
+                <span class="bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-pink-400 border border-pink-400">  {{ user.role }}</span>
+              </td>
+              <td class="px-6 py-4 ">
+                <button type="button" class="me-2"><script src="https://cdn.lordicon.com/lordicon.js"></script>
+                  <lord-icon
+                      src="https://cdn.lordicon.com/zfzufhzk.json"
+                      trigger="hover"
+                      stroke="light"
+                      state="hover-line"
+                      style="width:30px;height:30px">
+                  </lord-icon>
+                </button>
+                <button type="button" class=""><script src="https://cdn.lordicon.com/lordicon.js"></script>
+                  <lord-icon
+                      src="https://cdn.lordicon.com/xekbkxul.json"
+                      trigger="hover"
+                      stroke="light"
+                      state="morph-trash-in"
+                      colors="primary:#121331,secondary:#ff0000,tertiary:#646e78,quaternary:#ebe6ef"
+                      style="width:30px;height:30px">
+                  </lord-icon>
+                </button>
+
+
+              </td>
+          </tr>
+        }
+      </tbody>
+  </table>
+</div>
+

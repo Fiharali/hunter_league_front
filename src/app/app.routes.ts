@@ -5,6 +5,7 @@ import { authGuard } from './guard/auth.guard';
 import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGuard';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
 import { LayoutComponent } from './pages/layout/layout.component';
+import { UserComponent } from './components/user/user.component';
 
 export const routes: Routes = [
 
@@ -20,6 +21,12 @@ export const routes: Routes = [
       {
         path: '',
         component: StatistiquesComponent
+
+      },
+
+      {
+        path: 'admin/users',
+        component: UserComponent
 
       }
     ],
