@@ -19,12 +19,14 @@ export interface User {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UserComponent implements OnInit {
+
+  isLoading = false;
+
   users: User[] = [];
 
   constructor(private api: ApiService) {}
-
-
   getUsers(): Observable<User[]> {
+    this.isLoading = true;
     return this.api.get<User[]>('/users');
   }
 
@@ -33,5 +35,9 @@ export class UserComponent implements OnInit {
       this.users = users;
       console.log(users);
     });
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+
   }
 }
