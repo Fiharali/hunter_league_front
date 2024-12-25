@@ -15,6 +15,7 @@
   export class LoginService {
     private baseUrl = 'http://localhost:8080/api/auth';
 
+
     constructor(private http: HttpClient) {}
 
     login(data: {email: string, password: string}) :Observable<LoginResponse> {
