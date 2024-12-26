@@ -5,7 +5,7 @@
       <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dar:text-white dar:bg-gray-800">
          USERS LIST
 
-         <span class=" float-end"><a href="/admin/users/create"><lord-icon
+         <span class=" float-end"><a routerLink="/admin/users/create"><lord-icon
           src="https://cdn.lordicon.com/pdsourfn.json"
           trigger="hover"
           stroke="bold"
@@ -68,7 +68,7 @@
                         style="width:30px;height:30px">
                     </lord-icon>
                   </button>
-                  <button type="button" class=""><script src="https://cdn.lordicon.com/lordicon.js"></script>
+                  <button type="button" (click)="delete(user.id)"  class=""><script src="https://cdn.lordicon.com/lordicon.js"></script>
                     <lord-icon
                         src="https://cdn.lordicon.com/xekbkxul.json"
                         trigger="hover"

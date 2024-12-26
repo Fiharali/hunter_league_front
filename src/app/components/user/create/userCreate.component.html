@@ -1,119 +1,197 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-  <h1 class="p-5 text-lg font-semibold text-center text-gray-900 bg-white">ADD_USER</h1>
+  <h1 class="p-5 text-lg font-semibold text-center text-gray-900 bg-white">
+    create new user account 
+  </h1>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="w-2/3 mx-auto">
     <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">First Name</label>
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >First Name</label
+      >
       <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="text" formControlName="firstName" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter First Name"/>
+        <input
+          type="text"
+          formControlName="firstName"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          placeholder="Enter First Name"
+        />
         @if (firstName?.invalid && (firstName?.dirty || firstName?.touched)) {
-          @if (firstName?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">First name is required</p>
-          }
-          @if (firstName?.errors?.['minlength']) {
-            <p class="mt-1 text-sm text-red-600">First name  must be at least 3 characters</p>
+        @if (firstName?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">First name is required</p>
+        } @if (firstName?.errors?.['minlength']) {
+        <p class="mt-1 text-sm text-red-600">
+          First name must be at least 3 characters
+        </p>
+        } }
+      </div>
+    </div>
+
+    <div class="relative mb-6">
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >Last Name</label
+      >
+      <div class="relative text-gray-500 focus-within:text-gray-900">
+        <input
+          type="text"
+          formControlName="lastName"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          placeholder="Enter Last Name"
+        />
+        @if (lastName?.invalid && (lastName?.dirty || lastName?.touched)) { @if
+        (lastName?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">Last name is required</p>
+        } @if (lastName?.errors?.['minlength']) {
+        <p class="mt-1 text-sm text-red-600">
+          First name must be at least 3 characters
+        </p>
+        } }
+      </div>
+    </div>
+
+    <div class="relative mb-6">
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >Email</label
+      >
+      <div class="relative text-gray-500 focus-within:text-gray-900">
+        <input
+          type="email"
+          formControlName="email"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          placeholder="Enter Email"
+        />
+        @if (email?.invalid && (email?.dirty || email?.touched)) { @if
+        (email?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">Email is required</p>
+        } @if (email?.errors?.['email']) {
+        <p class="mt-1 text-sm text-red-600">Please enter a valid email</p>
+        } @if (email?.errors?.['serverError']) {
+        <p class="mt-1 text-sm text-red-600">
+          {{ email?.errors?.['serverError'] }}
+        </p>
+        } }
+      </div>
+    </div>
+
+    <div class="relative mb-6">
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >Password</label
+      >
+      <div class="relative text-gray-500 focus-within:text-gray-900">
+        <input
+          type="password"
+          formControlName="password"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          placeholder="Enter Password"
+        />
+        @if (password?.invalid && (password?.dirty || password?.touched)) { @if
+        (password?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">Password is required</p>
+        } @if (password?.errors?.['minlength']) {
+        <p class="mt-1 text-sm text-red-600">
+          Password must be at least 8 characters
+        </p>
+        } }
+      </div>
+    </div>
+    <div class="relative mb-6">
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >Password</label
+      >
+      <div class="relative text-gray-500 focus-within:text-gray-900">
+        <select
+          name="role"
+          id="role"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          formControlName="role"
+        >
+          <option value="" selected >choice role </option>
+          <option value="ADMIN">Admin</option>
+          <option value="JURY">Jury</option>
+          <option value="MEMBER">Member</option>
+        </select>
+        @if (role?.invalid && (role?.dirty || role?.touched)) {
+          @if  (role?.errors?.['required']) {
+            <p class="mt-1 text-sm text-red-600">role is required</p>
           }
         }
       </div>
     </div>
 
     <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">Last Name</label>
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >Nationality</label
+      >
       <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="text" formControlName="lastName" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Last Name"/>
-        @if (lastName?.invalid && (lastName?.dirty || lastName?.touched)) {
-          @if (lastName?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">Last name is required</p>
-          }
-
-          @if (lastName?.errors?.['minlength']) {
-            <p class="mt-1 text-sm text-red-600">First name  must be at least 3 characters</p>
-          }
-        }
+        <input
+          type="text"
+          formControlName="nationality"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          placeholder="Enter Nationality"
+        />
+        @if (nationality?.invalid && (nationality?.dirty ||
+        nationality?.touched)) { @if (nationality?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">Nationality is required</p>
+        } @if (nationality?.errors?.['minlength']) {
+        <p class="mt-1 text-sm text-red-600">
+          First name must be at least 3 characters
+        </p>
+        } }
       </div>
     </div>
 
     <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">Email</label>
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >CIN</label
+      >
       <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="email" formControlName="email" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Email"/>
-        @if (email?.invalid && (email?.dirty || email?.touched)) {
-          @if (email?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">Email is required</p>
-          }
-          @if (email?.errors?.['email']) {
-            <p class="mt-1 text-sm text-red-600">Please enter a valid email</p>
-          }
-          @if (email?.errors?.['serverError']) {
-            <p class="mt-1 text-sm text-red-600">{{ email?.errors?.['serverError'] }}</p>
-          }
-        }
+        <input
+          type="text"
+          formControlName="cin"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+          placeholder="Enter CIN"
+        />
+        @if (cin?.invalid && (cin?.dirty || cin?.touched)) { @if
+        (cin?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">CIN is required</p>
+        } @if (cin?.errors?.['minlength']) {
+        <p class="mt-1 text-sm text-red-600">
+          First name must be at least 3 characters
+        </p>
+        } }
       </div>
     </div>
 
     <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">Password</label>
+      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium"
+        >License Expiration Date</label
+      >
       <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="password" formControlName="password" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Password"/>
-        @if (password?.invalid && (password?.dirty || password?.touched)) {
-          @if (password?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">Password is required</p>
-          }
-          @if (password?.errors?.['minlength']) {
-            <p class="mt-1 text-sm text-red-600">Password must be at least 8 characters</p>
-          }
-        }
-      </div>
-    </div>
-
-    <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">Nationality</label>
-      <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="text" formControlName="nationality" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter Nationality"/>
-        @if (nationality?.invalid && (nationality?.dirty || nationality?.touched)) {
-          @if (nationality?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">Nationality is required</p>
-          }
-          @if (nationality?.errors?.['minlength']) {
-            <p class="mt-1 text-sm text-red-600">First name  must be at least 3 characters</p>
-          }
-        }
-      </div>
-    </div>
-
-    <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">CIN</label>
-      <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="text" formControlName="cin" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter CIN"/>
-        @if (cin?.invalid && (cin?.dirty || cin?.touched)) {
-          @if (cin?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">CIN is required</p>
-          }
-          @if (cin?.errors?.['minlength']) {
-            <p class="mt-1 text-sm text-red-600">First name  must be at least 3 characters</p>
-          }
-        }
-      </div>
-    </div>
-
-    <div class="relative mb-6">
-      <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">License Expiration Date</label>
-      <div class="relative text-gray-500 focus-within:text-gray-900">
-        <input type="datetime-local" formControlName="licenseExpirationDate" class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"/>
-        @if (licenseExpirationDate?.invalid && (licenseExpirationDate?.dirty || licenseExpirationDate?.touched)) {
-          @if (licenseExpirationDate?.errors?.['required']) {
-            <p class="mt-1 text-sm text-red-600">License expiration date is required</p>
-          }
-          @if (licenseExpirationDate?.errors?.['minlength']) {
-            <p class="mt-1 text-sm text-red-600">First name  must be at least 3 characters</p>
-          }
-        }
+        <input
+          type="datetime-local"
+          formControlName="licenseExpirationDate"
+          class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+        />
+        @if (licenseExpirationDate?.invalid && (licenseExpirationDate?.dirty ||
+        licenseExpirationDate?.touched)) { @if
+        (licenseExpirationDate?.errors?.['required']) {
+        <p class="mt-1 text-sm text-red-600">
+          License expiration date is required
+        </p>
+        } @if (licenseExpirationDate?.errors?.['minlength']) {
+        <p class="mt-1 text-sm text-red-600">
+          First name must be at least 3 characters
+        </p>
+        } }
       </div>
     </div>
 
     <div class="flex items-center justify-center">
-      <button type="submit" [disabled]="!userForm.valid || isLoading" class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7">
-        {{ isLoading ? 'Creating...' : 'Create Account' }}
+      <button
+        type="submit"
+        [disabled]="!userForm.valid || isLoading"
+        class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7"
+      >
+        {{ isLoading ? "Creating..." : "Create Account" }}
       </button>
     </div>
   </form>

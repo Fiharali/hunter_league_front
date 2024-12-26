@@ -21,7 +21,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: StatistiquesComponent
+        component: StatistiquesComponent,
 
       },
 

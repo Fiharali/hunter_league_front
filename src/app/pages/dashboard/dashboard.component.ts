@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 
@@ -13,7 +13,7 @@ export class DashboardComponent {
   private router: Router;
 
   constructor(router: Router) {
-    this.router = router; 
+    this.router = router;
   }
 
 
