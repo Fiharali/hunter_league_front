@@ -46,13 +46,13 @@ get email() { return this.loginForm.get('email'); }
             const decodedData = this.decodeToken(response.token);
 
             if (decodedData.role === 'ADMIN') {
-              //this.router.navigate(['/admin']);
+              this.router.navigate(['/admin']);
               console.log('this is Admin');
             } else if (decodedData.role === 'MEMBER') {
-             // this.router.navigate(['/member']);
+              this.router.navigate(['/member']);
              console.log('this is Member');
             }else {
-             // this.router.navigate(['/jury']);
+              this.router.navigate(['/jury']);
              console.log('this is jury');
 
             }

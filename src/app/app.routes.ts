@@ -4,9 +4,11 @@ import { AppComponent } from './app.component';
 import { authGuard } from './guard/auth.guard';
 import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGuard';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
-import { LayoutComponent } from './pages/adminLayout/adminLayout.component';
+import { AdminLayoutComponent } from './pages/adminLayout/adminLayout.component';
 import { UserComponent } from './components/user/user.component';
 import { UserCreateComponent } from './components/user/create/userCreate.component';
+import { MemberLayoutComponent } from './pages/memberLayout/memberLayout.component';
+import { JuryLayoutComponent } from './pages/juryLayout/juryLayout.component';
 
 export const routes: Routes = [
   {
@@ -16,7 +18,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    component: LayoutComponent,
+    component: AdminLayoutComponent,
     children: [
       {
         path: '',
@@ -24,12 +26,36 @@ export const routes: Routes = [
       },
 
       {
-        path: '/users',
+        path: 'users',
         component: UserComponent,
       },
       {
-        path: '/users/create',
+        path: 'users/create',
         component: UserCreateComponent,
+      },
+    ],
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'member',
+    component: MemberLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: StatistiquesComponent,
+      },
+    ],
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'jury',
+    component: JuryLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: StatistiquesComponent,
       },
     ],
     canActivate: [authGuard],
