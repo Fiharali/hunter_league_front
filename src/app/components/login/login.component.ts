@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators , ReactiveFormsModule } from '@angul
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginResponse, LoginService } from './login.service';
+import e from 'express';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { LoginResponse, LoginService } from './login.service';
 
 
 
-export class LoginComponent implements OnInit{
+export class LoginComponent {
 
   loginForm: FormGroup;
   loading: boolean = false;
@@ -42,7 +43,19 @@ get email() { return this.loginForm.get('email'); }
       next: (response : LoginResponse) => {
        if (response && response.token) {
           localStorage.setItem('auth-token', response.token);
-          this.router.navigate(['/']);
+            const decodedData = this.decodeToken(response.token);
+
+            if (decodedData.role === 'ADMIN') {
+              this.router.navigate(['/admin']);
+              console.log('this is Admin');
+            } else if (decodedData.role === 'MEMBER') {
+              this.router.navigate(['/member']);
+             console.log('this is Member');
+            }else {
+              this.router.navigate(['/jury']);
+             console.log('this is jury');
+
+            }
        }
       },
       error: (error) => {
@@ -61,10 +74,15 @@ get email() { return this.loginForm.get('email'); }
   this.loading = false;
 }
 
-ngOnInit() {
-  const token = localStorage.getItem('auth-token');
-  if (token) {
-    this.router.navigate(['/']);
+
+
+decodeToken(token: string): any {
+  try {
+    const payload = token.split('.')[1];
+    return JSON.parse(atob(payload));
+  } catch (e) {
+    console.error('Invalid token:', e);
+    return null;
   }
 }
 

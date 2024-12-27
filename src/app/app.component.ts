@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from "./pages/navbar/navbar.component";
-import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import { AdminDashboardComponent } from "./pages/adminDashboard/adminDashboard.component";
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 

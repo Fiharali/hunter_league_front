@@ -4,43 +4,60 @@ import { AppComponent } from './app.component';
 import { authGuard } from './guard/auth.guard';
 import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGuard';
 import { StatistiquesComponent } from './components/statistiques/statistiques.component';
-import { LayoutComponent } from './pages/layout/layout.component';
+import { AdminLayoutComponent } from './pages/adminLayout/adminLayout.component';
 import { UserComponent } from './components/user/user.component';
 import { UserCreateComponent } from './components/user/create/userCreate.component';
+import { MemberLayoutComponent } from './pages/memberLayout/memberLayout.component';
+import { JuryLayoutComponent } from './pages/juryLayout/juryLayout.component';
 
 export const routes: Routes = [
-
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [redirectIfAuthenticatedGuard]
+    canActivate: [redirectIfAuthenticatedGuard],
   },
   {
-    path: '',
-    component: LayoutComponent,
+    path: 'admin',
+    component: AdminLayoutComponent,
     children: [
       {
         path: '',
         component: StatistiquesComponent,
-
       },
 
       {
-        path: 'admin/users',
-        component: UserComponent
-
+        path: 'users',
+        component: UserComponent,
       },
       {
-        path: 'admin/users/create',
-        component: UserCreateComponent
-
-      }
+        path: 'users/create',
+        component: UserCreateComponent,
+      },
     ],
-    canActivate: [authGuard]
-  }
+    canActivate: [authGuard],
+  },
 
+  {
+    path: 'member',
+    component: MemberLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: StatistiquesComponent,
+      },
+    ],
+    canActivate: [authGuard],
+  },
 
-
-
-
+  {
+    path: 'jury',
+    component: JuryLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: StatistiquesComponent,
+      },
+    ],
+    canActivate: [authGuard],
+  },
 ];

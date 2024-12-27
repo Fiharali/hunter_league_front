@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-member-dashboard',
   imports: [RouterModule],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './memberDashboard.component.html',
+  styleUrl: './memberDashboard.component.css'
 
 })
-export class DashboardComponent {
+export class MemberDashboardComponent {
 
   private router: Router;
 
