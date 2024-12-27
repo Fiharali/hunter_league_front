@@ -9,6 +9,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './adminLayout.component.html',
   styleUrl: './adminLayout.component.css'
 })
-export class LayoutComponent {
+export class MemberLayoutComponent {
 
 }

@@ -15,7 +15,7 @@ export const routes: Routes = [
     canActivate: [redirectIfAuthenticatedGuard],
   },
   {
-    path: '',
+    path: 'admin',
     component: LayoutComponent,
     children: [
       {
@@ -24,11 +24,11 @@ export const routes: Routes = [
       },
 
       {
-        path: 'admin/users',
+        path: '/users',
         component: UserComponent,
       },
       {
-        path: 'admin/users/create',
+        path: '/users/create',
         component: UserCreateComponent,
       },
     ],
