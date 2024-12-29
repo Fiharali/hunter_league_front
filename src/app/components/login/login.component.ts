@@ -44,17 +44,8 @@ get email() { return this.loginForm.get('email'); }
        if (response && response.token) {
           localStorage.setItem('auth-token', response.token);
             const decodedData = this.decodeToken(response.token);
-
-            if (decodedData.role === 'ADMIN') {
-              this.router.navigate(['/admin']);
-              console.log('this is Admin');
-            } else if (decodedData.role === 'MEMBER') {
-              this.router.navigate(['/member']);
-             console.log('this is Member');
-            }else {
-              this.router.navigate(['/jury']);
-             console.log('this is jury');
-
+            if (decodedData && decodedData.role) {
+              this.login(decodedData.role);
             }
        }
       },
@@ -75,6 +66,16 @@ get email() { return this.loginForm.get('email'); }
 }
 
 
+
+login(role : string){
+  if (role === 'ADMIN') {
+    this.router.navigate(['/admin']);
+  } else if (role === 'MEMBER') {
+    this.router.navigate(['/member']);
+  }else {
+    this.router.navigate(['/jury']);
+  }
+}
 
 decodeToken(token: string): any {
   try {

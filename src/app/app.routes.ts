@@ -9,6 +9,7 @@ import { UserComponent } from './components/user/user.component';
 import { UserCreateComponent } from './components/user/create/userCreate.component';
 import { MemberLayoutComponent } from './pages/memberLayout/memberLayout.component';
 import { JuryLayoutComponent } from './pages/juryLayout/juryLayout.component';
+import { roleGuard } from './guard/role.guard';
 
 export const routes: Routes = [
   {
@@ -34,7 +35,8 @@ export const routes: Routes = [
         component: UserCreateComponent,
       },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
   },
 
   {
@@ -46,7 +48,8 @@ export const routes: Routes = [
         component: StatistiquesComponent,
       },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'MEMBER' }
   },
 
   {
@@ -58,6 +61,7 @@ export const routes: Routes = [
         component: StatistiquesComponent,
       },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'JURY' }
   },
 ];
