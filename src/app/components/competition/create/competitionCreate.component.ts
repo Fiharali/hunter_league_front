@@ -73,7 +73,7 @@ export class CompetitionCreateComponent  {
         },
         error: (err) => {
 
-          if (err?.error?.message) {
+          if (err?.error?.maxGreaterThanMin) {
             this.competitionForm.get('maxParticipants')?.setErrors({
               serverError: err.error.maxGreaterThanMin
             });
