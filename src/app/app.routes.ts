@@ -10,6 +10,7 @@ import { UserCreateComponent } from './components/user/create/userCreate.compone
 import { MemberLayoutComponent } from './pages/memberLayout/memberLayout.component';
 import { JuryLayoutComponent } from './pages/juryLayout/juryLayout.component';
 import { roleGuard } from './guard/role.guard';
+import { CompetitionComponent } from './components/competition/competition.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,10 @@ export const routes: Routes = [
       {
         path: 'users/create',
         component: UserCreateComponent,
+      },
+      {
+        path: 'competitions',
+        component: CompetitionComponent,
       },
     ],
     canActivate: [authGuard, roleGuard],

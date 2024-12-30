@@ -39,10 +39,12 @@ export class UserComponent implements OnInit {
     this.getUsers().subscribe(users => {
       this.users = users;
       console.log(users);
-      if (users.length >0) {
-        this.isLoading = false;
+      setTimeout(() => {
+        if (users.length >0) {
+          this.isLoading = false;
+        }
+      }, 500);
 
-      }
     });
 
 
