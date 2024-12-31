@@ -14,6 +14,7 @@ import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGua
 import { CompetitionCreateComponent }   from './components/competition/create/competitionCreate.component';
 import {SpeciesComponent} from './components/species/species.component';
 import {SpeciesCreateComponent} from './components/species/create/speciesCreate.component';
+import {MemberCompetitionComponent} from './components/member/competition/memberCompetition.component';
 
 
 
@@ -76,6 +77,10 @@ export const routes: Routes = [
       {
         path: '',
         component: StatistiquesComponent,
+      },
+      {
+        path: 'competitions',
+        component: MemberCompetitionComponent,
       },
     ],
     canActivate: [authGuard, roleGuard],

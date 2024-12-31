@@ -1,0 +1,88 @@
+<div class="relative p-4">
+  <h1 class="text-2xl font-bold text-gray-900 da:text-white mb-6">
+    COMPETITIONS LIST
+    <a
+      routerLink="/admin/competitions/create"
+      class="float-right bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700"
+    >
+      <lord-icon
+        src="https://cdn.lordicon.com/pdsourfn.json"
+        trigger="hover"
+        stroke="bold"
+        colors="primary:#ffffff,secondary:#ffffff"
+        style="width: 40px; height: 40px"
+      >
+      </lord-icon>
+    </a>
+  </h1>
+
+  @if (isLoading) {
+    <div class="flex justify-center items-center my-10">
+      <div
+        class="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"
+      ></div>
+      <span class="ml-2 text-gray-900 da:text-gray-100">Loading...</span>
+    </div>
+  }
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (competitions of competitions; track $index) {
+  <div
+    class="bg-white rounded-lg shadow-lg da:bg-gray-800 da:shadow-gray-700"
+  >
+    <div class="p-5">
+      <h2
+        class="text-lg font-semibold text-gray-900 da:text-white mb-2"
+      >
+        {{ competitions.location }}
+      </h2>
+      <p class="text-gray-700 da:text-gray-300">
+        Date: {{ competitions.date | date: 'longDate' }}
+      </p>
+      <p class="text-gray-700 da:text-gray-300">
+        Min Participants: {{ competitions.minParticipants }}
+      </p>
+      <p class="text-gray-700 da:text-gray-300">
+        Max Participants: {{ competitions.maxParticipants }}
+      </p>
+      <p class="text-gray-700 da:text-gray-300">
+        Participation Count: {{ competitions.participationCount }}
+      </p>
+    </div>
+    <div class="flex justify-between items-center p-4 bg-gray-100 da:bg-gray-700">
+      <button
+        type="button"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+      >
+        Participate
+      </button>
+      <div class="flex space-x-3">
+        <button type="button" class="text-gray-500 hover:text-gray-800">
+          <lord-icon
+            src="https://cdn.lordicon.com/zfzufhzk.json"
+            trigger="hover"
+            stroke="bold"
+            style="width: 30px; height: 30px"
+          >
+          </lord-icon>
+        </button>
+        <button
+          type="button"
+          (click)="delete(competitions.id)"
+          class="text-gray-500 hover:text-red-600"
+        >
+          <lord-icon
+            src="https://cdn.lordicon.com/xekbkxul.json"
+            trigger="hover"
+            stroke="bold"
+            colors="primary:#ff0000,secondary:#000000"
+            style="width: 30px; height: 30px"
+          >
+          </lord-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+  </div>
+
+</div>
