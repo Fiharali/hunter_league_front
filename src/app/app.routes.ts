@@ -12,6 +12,8 @@ import { roleGuard }                    from './guard/role.guard';
 import { CompetitionComponent }         from './components/competition/competition.component';
 import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGuard';
 import { CompetitionCreateComponent }   from './components/competition/create/competitionCreate.component';
+import {SpeciesComponent} from './components/species/species.component';
+import {SpeciesCreateComponent} from './components/species/create/speciesCreate.component';
 
 
 
@@ -53,6 +55,14 @@ export const routes: Routes = [
       {
         path: 'competitions/create',
         component: CompetitionCreateComponent,
+      },
+      {
+        path: 'species',
+        component: SpeciesComponent,
+      },
+      {
+        path: 'species/create',
+        component: SpeciesCreateComponent,
       },
     ],
     canActivate: [authGuard, roleGuard],
