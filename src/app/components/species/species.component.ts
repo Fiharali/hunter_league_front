@@ -1,46 +1,44 @@
-import { ApiService } from './../../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Router } from 'express';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
-export interface User {
+export interface Species {
   id: string;
-  email: string;
-  cin: string;
-  firstName: string;
-  lastName: string;
-  role: string;
+  name: string;
+  category: string;
+  minimumWeight: number;
+  difficulty: string;
 
 }
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css'],
+  selector: 'app-species',
+  templateUrl: './species.component.html',
+  styleUrls: ['./species.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports : [RouterModule]
 })
-export class UserComponent implements OnInit {
+export class SpeciesComponent implements OnInit {
 
 
   isLoading = false;
 
-  users: User[] = [];
+  species: Species[] = [];
 
   constructor(private api: ApiService) {}
-  getUsers(): Observable<User[]> {
+  getspecies(): Observable<Species[]> {
     this.isLoading = true;
-    return this.api.get<User[]>('/users');
+    return this.api.get<Species[]>('/species');
   }
 
   ngOnInit() {
-    this.getUsers().subscribe(users => {
-      this.users = users;
-      console.log(users);
+    this.getspecies().subscribe(species => {
+      this.species = species;
+      console.log(species);
       setTimeout(() => {
-        if (users.length >0) {
+        if (species.length >0) {
           this.isLoading = false;
         }
       }, 500);
@@ -51,7 +49,7 @@ export class UserComponent implements OnInit {
   }
 
 
-  delete(userId: string) {
+  delete(speciesId: string) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -62,22 +60,22 @@ export class UserComponent implements OnInit {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.api.delete<any>(`/users/${userId}`).subscribe({
+        this.api.delete<any>(`/species/${speciesId}`).subscribe({
           next: () => {
-            this.users = this.users.filter(user => user.id !== userId);
+            this.species = this.species.filter(species => species.id !== speciesId);
             Swal.fire({
               title: "Deleted!",
-              text: "User has been deleted successfully.",
+              text: "Species has been deleted successfully.",
               icon: "success"
             });
           },
           error: (error) => {
             Swal.fire({
               title: "Error!",
-              text: "Failed to delete user. Please try again.",
+              text: "Failed to delete species. Please try again.",
               icon: "error"
             });
-            console.error('Error deleting user:', error);
+            console.error('Error deleting species:', error);
           }
         });
       }

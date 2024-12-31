@@ -1,14 +1,29 @@
-import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { AppComponent } from './app.component';
-import { authGuard } from './guard/auth.guard';
+import { Routes }                       from '@angular/router';
+import { LoginComponent }               from './components/login/login.component';
+import { authGuard }                    from './guard/auth.guard';
+
+import { StatistiquesComponent }        from './components/statistiques/statistiques.component';
+import { AdminLayoutComponent }         from './pages/adminLayout/adminLayout.component';
+import { UserComponent }                from './components/user/user.component';
+import { UserCreateComponent }          from './components/user/create/userCreate.component';
+import { MemberLayoutComponent }        from './pages/memberLayout/memberLayout.component';
+import { JuryLayoutComponent }          from './pages/juryLayout/juryLayout.component';
+import { roleGuard }                    from './guard/role.guard';
+import { CompetitionComponent }         from './components/competition/competition.component';
 import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGuard';
-import { StatistiquesComponent } from './components/statistiques/statistiques.component';
-import { AdminLayoutComponent } from './pages/adminLayout/adminLayout.component';
-import { UserComponent } from './components/user/user.component';
-import { UserCreateComponent } from './components/user/create/userCreate.component';
-import { MemberLayoutComponent } from './pages/memberLayout/memberLayout.component';
-import { JuryLayoutComponent } from './pages/juryLayout/juryLayout.component';
+import { CompetitionCreateComponent }   from './components/competition/create/competitionCreate.component';
+import {SpeciesComponent} from './components/species/species.component';
+import {SpeciesCreateComponent} from './components/species/create/speciesCreate.component';
+
+
+
+
+
+
+
+
+
+
 
 export const routes: Routes = [
   {
@@ -33,8 +48,25 @@ export const routes: Routes = [
         path: 'users/create',
         component: UserCreateComponent,
       },
+      {
+        path: 'competitions',
+        component: CompetitionComponent,
+      },
+      {
+        path: 'competitions/create',
+        component: CompetitionCreateComponent,
+      },
+      {
+        path: 'species',
+        component: SpeciesComponent,
+      },
+      {
+        path: 'species/create',
+        component: SpeciesCreateComponent,
+      },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
   },
 
   {
@@ -46,7 +78,8 @@ export const routes: Routes = [
         component: StatistiquesComponent,
       },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'MEMBER' }
   },
 
   {
@@ -58,6 +91,7 @@ export const routes: Routes = [
         component: StatistiquesComponent,
       },
     ],
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'JURY' }
   },
 ];
