@@ -1,3 +1,4 @@
+import { JuryCompetitionComponent } from './jury/competition/juryCompetition.component';
 import { Routes }                       from '@angular/router';
 import { LoginComponent }               from './components/login/login.component';
 import { authGuard }                    from './guard/auth.guard';
@@ -94,6 +95,10 @@ export const routes: Routes = [
       {
         path: '',
         component: StatistiquesComponent,
+      },
+      {
+        path: 'competitions',
+        component: JuryCompetitionComponent,
       },
     ],
     canActivate: [authGuard, roleGuard],

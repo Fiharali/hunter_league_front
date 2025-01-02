@@ -1,10 +1,12 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterModule }                              from '@angular/router';
-import { ApiService }                                from '../../../services/api.service';
+import { ApiService }                                from '../../services/api.service';
 import { Observable }                                from 'rxjs';
 import Swal                                          from 'sweetalert2';
 import { CommonModule }                              from '@angular/common';
-import {LoginResponse} from '../../login/login.service';
+
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 
 
 
@@ -50,17 +52,21 @@ export interface PageableResponse {
 
 @Component({
   selector: 'app-competition',
-  templateUrl: './memberCompetition.component.html',
-  styleUrls: ['./memberCompetition.component.css'],
+  templateUrl: './juryCompetition.component.html',
+  styleUrls: ['./juryCompetition.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RouterModule, CommonModule]
+  imports: [RouterModule, CommonModule , ReactiveFormsModule]
 })
-export class MemberCompetitionComponent implements OnInit {
+export class JuryCompetitionComponent implements OnInit {
   isLoading = false;
   error: string = "";
   timeoutId: any;
+  participationsToSelect: any = [];
+
+
 
   competitions: Competition[] = [];
+  species: any[] = [];
   currentPage = 0;
   totalPages = 0;
   totalElements = 0;
@@ -70,6 +76,10 @@ export class MemberCompetitionComponent implements OnInit {
   getCompetitions(): Observable<PageableResponse> {
     this.isLoading = true;
     return this.api.get<PageableResponse>('/competitions');
+  }
+
+  getSpecies(): Observable<any> {
+    return this.api.get<any>('/species');
   }
 
   ngOnInit() {
@@ -130,40 +140,31 @@ export class MemberCompetitionComponent implements OnInit {
 
   addParticipation(id: string) {
 
-    const decodedData = this.decodeToken();
-    const data = {
-      userEmail: decodedData.sub,
-      competitionId : id
-    }
-    this.api.post(`/participations/register`, data).subscribe({
-      next: (response : any) => {
-        // console.log(response);
-        Swal.fire({
-          title: "Good job!",
-          text: "You clicked the button!",
-          icon: "success",
-          timer: 2000,
-          confirmButtonText: 'OK',
-          confirmButtonColor: 'red',
-
-        });
+    this.getSpecies().subscribe({
+      next: (response) => {
+        if (response) {
+          this.species = response;
+          console.log(response)
+        }
       },
       error: (error) => {
-        if (error?.error) {
-          this.error = typeof error.error === 'object' ? error.error.error || error.error.message : error.error;
-          if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-          }
-
-          this.timeoutId = setTimeout(() => {
-            this.error = "";
-          }, 2000);
-        }
+        console.error('Error fetching species:', error);
       }
-      ,
-
     });
+  this.api.get<any>(`/participations/${id}`).subscribe({
+
+    next: (response) => {
+      if (response) {
+        this.participationsToSelect = response;
+        console.log( response)
+      }
+    },
+    error: (error) => {
+      console.error('Error adding participation:', error);
+    }
+  })
   }
+
 
   decodeToken(): any {
     try {
