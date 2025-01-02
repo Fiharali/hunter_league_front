@@ -4,6 +4,7 @@ import { ApiService }                                from '../../../services/api
 import { Observable }                                from 'rxjs';
 import Swal                                          from 'sweetalert2';
 import { CommonModule }                              from '@angular/common';
+import {LoginResponse} from '../../login/login.service';
 
 
 
@@ -56,6 +57,9 @@ export interface PageableResponse {
 })
 export class MemberCompetitionComponent implements OnInit {
   isLoading = false;
+  error: string = "";
+  timeoutId: any;
+
   competitions: Competition[] = [];
   currentPage = 0;
   totalPages = 0;
@@ -122,5 +126,50 @@ export class MemberCompetitionComponent implements OnInit {
         });
       }
     });
+  }
+
+  addParticipation(id: string) {
+
+    const decodedData = this.decodeToken();
+    const data = {
+      userEmail: decodedData.sub,
+      competitionId : id
+    }
+    this.api.post(`/participations/register`, data).subscribe({
+      next: (response : any) => {
+        // console.log(response);
+        Swal.fire({
+          title: "Good job!",
+          text: "You clicked the button!",
+          icon: "success"
+        });
+      },
+      error: (error) => {
+        if (error?.error) {
+          this.error = typeof error.error === 'object' ? error.error.error || error.error.message : error.error;
+          if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+          }
+
+          this.timeoutId = setTimeout(() => {
+            this.error = "";
+          }, 2000);
+        }
+      }
+      ,
+
+    });
+  }
+
+  decodeToken(): any {
+    try {
+      const  token = localStorage.getItem('auth-token');
+      // @ts-ignore
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch (e) {
+      console.error('Invalid token:', e);
+      return null;
+    }
   }
 }

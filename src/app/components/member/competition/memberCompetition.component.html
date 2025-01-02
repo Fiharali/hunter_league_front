@@ -1,20 +1,21 @@
 <div class="relative p-4">
   <h1 class="text-2xl font-bold text-gray-900 da:text-white mb-6">
     COMPETITIONS LIST
-    <a
-      routerLink="/admin/competitions/create"
-      class="float-right bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700"
-    >
-      <lord-icon
-        src="https://cdn.lordicon.com/pdsourfn.json"
-        trigger="hover"
-        stroke="bold"
-        colors="primary:#ffffff,secondary:#ffffff"
-        style="width: 40px; height: 40px"
-      >
-      </lord-icon>
-    </a>
   </h1>
+
+  @if (error) {
+    <div id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-100 bg-red-700 rounded-lg shadow da:text-gray-400 da:bg-gray-800 fixed bottom-10 right-0  z-50 " role="alert">
+      <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg da:bg-red-800 da:text-red-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+        </svg>
+        <span class="sr-only">Error icon</span>
+      </div>
+      <div class="ms-3 text-sm font-normal">{{error.toString()}}</div>
+    </div>
+
+  }
+
 
   @if (isLoading) {
     <div class="flex justify-center items-center my-10">
@@ -49,37 +50,12 @@
       </p>
     </div>
     <div class="flex justify-between items-center p-4 bg-gray-100 da:bg-gray-700">
-      <button
+      <button (click)="addParticipation(competitions.id)"
         type="button"
         class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
       >
         Participate
       </button>
-      <div class="flex space-x-3">
-        <button type="button" class="text-gray-500 hover:text-gray-800">
-          <lord-icon
-            src="https://cdn.lordicon.com/zfzufhzk.json"
-            trigger="hover"
-            stroke="bold"
-            style="width: 30px; height: 30px"
-          >
-          </lord-icon>
-        </button>
-        <button
-          type="button"
-          (click)="delete(competitions.id)"
-          class="text-gray-500 hover:text-red-600"
-        >
-          <lord-icon
-            src="https://cdn.lordicon.com/xekbkxul.json"
-            trigger="hover"
-            stroke="bold"
-            colors="primary:#ff0000,secondary:#000000"
-            style="width: 30px; height: 30px"
-          >
-          </lord-icon>
-        </button>
-      </div>
     </div>
   </div>
   }
