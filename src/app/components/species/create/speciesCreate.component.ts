@@ -43,11 +43,11 @@ export class SpeciesCreateComponent {
 
   }
 
-  get name() { return this.speciesForm.get('name'); }
-  get category() { return this.speciesForm.get('category'); }
-  get minimumWeight() { return this.speciesForm.get('minimumWeight'); }
-  get difficulty() { return this.speciesForm.get('difficulty'); }
-  get points() { return this.speciesForm.get('points'); }
+    get name() { return this.speciesForm.get('name'); }
+    get category() { return this.speciesForm.get('category'); }
+    get minimumWeight() { return this.speciesForm.get('minimumWeight'); }
+    get difficulty() { return this.speciesForm.get('difficulty'); }
+    get points() { return this.speciesForm.get('points'); }
 
 
 

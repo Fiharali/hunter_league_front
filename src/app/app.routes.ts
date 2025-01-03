@@ -1,3 +1,4 @@
+import { JuryCompetitionComponent } from './jury/competition/juryCompetition.component';
 import { Routes }                       from '@angular/router';
 import { LoginComponent }               from './components/login/login.component';
 import { authGuard }                    from './guard/auth.guard';
@@ -14,6 +15,8 @@ import { redirectIfAuthenticatedGuard } from './guard/redirectIfAuthenticatedGua
 import { CompetitionCreateComponent }   from './components/competition/create/competitionCreate.component';
 import {SpeciesComponent} from './components/species/species.component';
 import {SpeciesCreateComponent} from './components/species/create/speciesCreate.component';
+import {MemberCompetitionComponent} from './components/member/competition/memberCompetition.component';
+import { PodiumComponent } from './components/podium/podium.component';
 
 
 
@@ -77,6 +80,10 @@ export const routes: Routes = [
         path: '',
         component: StatistiquesComponent,
       },
+      {
+        path: 'competitions',
+        component: MemberCompetitionComponent,
+      },
     ],
     canActivate: [authGuard, roleGuard],
     data: { role: 'MEMBER' }
@@ -89,6 +96,14 @@ export const routes: Routes = [
       {
         path: '',
         component: StatistiquesComponent,
+      },
+      {
+        path: 'competitions',
+        component: JuryCompetitionComponent,
+      },
+      {
+        path: 'competitions/:id',
+        component: PodiumComponent,
       },
     ],
     canActivate: [authGuard, roleGuard],
