@@ -55,7 +55,7 @@ export interface PageableResponse {
   templateUrl: './juryCompetition.component.html',
   styleUrls: ['./juryCompetition.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RouterModule, CommonModule , ReactiveFormsModule]
+  imports: [RouterModule , CommonModule , ReactiveFormsModule]
 })
 export class JuryCompetitionComponent implements OnInit {
   isLoading = false;
@@ -181,7 +181,9 @@ export class JuryCompetitionComponent implements OnInit {
 
   addHunt(){
     if (this.addHuntForm.valid) {
-      const huntData = this.addHuntForm.value;
+      let huntData = this.addHuntForm.value;
+      huntData = {...huntData, participationId: this.addHuntForm.value.participation , speciesId: this.addHuntForm.value.species};
+    //  console.log(huntData);
       this.api.post<any>(`/hunts`, huntData).subscribe({
         next: (response) => {
           console.log('hunt created:', response);

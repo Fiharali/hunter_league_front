@@ -16,6 +16,7 @@ import { CompetitionCreateComponent }   from './components/competition/create/co
 import {SpeciesComponent} from './components/species/species.component';
 import {SpeciesCreateComponent} from './components/species/create/speciesCreate.component';
 import {MemberCompetitionComponent} from './components/member/competition/memberCompetition.component';
+import { PodiumComponent } from './components/podium/podium.component';
 
 
 
@@ -99,6 +100,10 @@ export const routes: Routes = [
       {
         path: 'competitions',
         component: JuryCompetitionComponent,
+      },
+      {
+        path: 'competitions/:id',
+        component: PodiumComponent,
       },
     ],
     canActivate: [authGuard, roleGuard],

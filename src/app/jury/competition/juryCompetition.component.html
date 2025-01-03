@@ -59,25 +59,27 @@
         </p>
       </div>
       <div
-        data-modal-target="authentication-modal"
-        data-modal-toggle="authentication-modal"
-        type="button"
+
         class="flex justify-around items-center p-4 bg-gray-100 da:bg-gray-700"
       >
         <button
+        data-modal-target="authentication-modal"
+        data-modal-toggle="authentication-modal"
+
           (click)="addParticipation(competitions.id)"
           type="button"
           class="bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-500"
         >
           Add Hunt
         </button>
-        <button
 
+        <a
+          routerLink="/jury/competitions/{{ competitions.id }}"
           type="button"
-          class="bg-green-400 text-white px-4 py-2 rounded-md hover:bg-green-500"
+          class=" btn bg-green-400 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Show Podium
-        </button>
+        </a>
       </div>
     </div>
     }
