@@ -62,8 +62,8 @@ export class JuryCompetitionComponent implements OnInit {
   error: string = "";
   timeoutId: any;
   participationsToSelect: any = [];
-
-
+  addHuntForm: FormGroup;
+  participationId :string = '';
 
   competitions: Competition[] = [];
   species: any[] = [];
@@ -71,7 +71,19 @@ export class JuryCompetitionComponent implements OnInit {
   totalPages = 0;
   totalElements = 0;
 
-  constructor(private api: ApiService) {}
+  constructor( private fb: FormBuilder, private api: ApiService) {
+    this.addHuntForm = this.fb.group({
+      participation: ['',[ Validators.required ]],
+      species: ['',[ Validators.required ]],
+      weight: ['',[ Validators.required , Validators.min(0) ]],
+
+    });
+  }
+
+  get participation() { return this.addHuntForm.get('participation'); }
+  get specieses() { return this.addHuntForm.get('species'); }
+  get weight() { return this.addHuntForm.get('weight'); }
+
 
   getCompetitions(): Observable<PageableResponse> {
     this.isLoading = true;
@@ -140,6 +152,8 @@ export class JuryCompetitionComponent implements OnInit {
 
   addParticipation(id: string) {
 
+    this.participationId = id;
+
     this.getSpecies().subscribe({
       next: (response) => {
         if (response) {
@@ -163,6 +177,26 @@ export class JuryCompetitionComponent implements OnInit {
       console.error('Error adding participation:', error);
     }
   })
+  }
+
+  addHunt(){
+    if (this.addHuntForm.valid) {
+      const huntData = this.addHuntForm.value;
+      this.api.post<any>(`/hunts`, huntData).subscribe({
+        next: (response) => {
+          console.log('hunt created:', response);
+          this.addHuntForm.reset();
+          Swal.fire({
+            title: "Good job!",
+            text: "hunt created successfully",
+            icon: "success"
+          });
+        },
+        error: (err) => {
+          console.error('Error creating hunt:', err);
+        }
+      });
+    }
   }
 
 

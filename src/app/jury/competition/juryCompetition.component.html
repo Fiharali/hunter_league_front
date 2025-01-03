@@ -72,7 +72,7 @@
           Add Hunt
         </button>
         <button
-          (click)="addParticipation(competitions.id)"
+
           type="button"
           class="bg-green-400 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
@@ -123,13 +123,14 @@
       </div>
       <!-- Modal body -->
       <div class="p-4 md:p-5">
-        <form class="space-y-4" method="post">
+        <form class="space-y-4" method="post" (submit)="addHunt()" [formGroup]="addHuntForm">
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900"
               >Select Participation</label
             >
             <select
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              formControlName="participation"
             >
             <option value=""> select participation  </option>
               @for (participation of participationsToSelect; track  participation.id) {
@@ -141,6 +142,10 @@
               </option>
               }
             </select>
+            @if (participation?.invalid && (participation?.dirty ||
+            participation?.touched)) { @if (participation?.errors?.['required']) {
+            <p class="mt-1 text-sm text-red-600">participation is required</p>
+            } }
           </div>
           <div>
             <label class="block mb-2 text-sm font-medium text-gray-900"
@@ -148,23 +153,40 @@
             >
             <select
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              formControlName="species"
             >
             <option value=""> select species </option>
-              @for (participation of species; track
-              participation.id) {
-              <option [value]="participation.id">
-                {{ participation.category  }} |
-                {{ participation.minimumWeight  }} KG|
+              @for (species of species; track
+              species.id) {
+              <option [value]="species.id">
+                {{ species.category  }} |
+                {{ species.minimumWeight  }} KG|
 
               </option>
               }
             </select>
+            @if (specieses?.invalid && (specieses?.dirty ||
+            specieses?.touched)) { @if (specieses?.errors?.['required']) {
+            <p class="mt-1 text-sm text-red-600">specieses is required</p>
+            } }
             <div>
+              <label class="block mb-2 text-sm font-medium text-gray-900"
+              >Entre the weight</label
+            >
               <input
+              formControlName="weight"
               type="number"
               class="block w-full h-11 px-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
-              placeholder="Enter maxParticipants"
+              placeholder="Enter weight"
             />
+            @if (weight?.invalid && (weight?.dirty ||
+            weight?.touched)) { @if (weight?.errors?.['required']) {
+            <p class="mt-1 text-sm text-red-600">weight is required</p>
+            } @if (weight?.errors?.['min']) {
+            <p class="mt-1 text-sm text-red-600">
+              min must be positive
+            </p>
+            } }
             </div>
           </div>
 
