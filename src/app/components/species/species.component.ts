@@ -3,8 +3,8 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
-import { loadSpecies, loadSpeciesFailure, loadSpeciesSuccess, SpeciesFacade } from '../../store/species';
-import { Store } from '@ngrx/store';
+import { SpeciesFacade } from '../../store/species';
+
 
 export interface Species {
   id: string;
@@ -76,26 +76,17 @@ export class SpeciesComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
+
       if (result.isConfirmed) {
-        this.api.delete<any>(`/species/${speciesId}`).subscribe({
-          next: () => {
-            this.species = this.species.filter(species => species.id !== speciesId);
-            Swal.fire({
-              title: "Deleted!",
-              text: "Species has been deleted successfully.",
-              icon: "success"
-            });
-          },
-          error: (error) => {
-            Swal.fire({
-              title: "Error!",
-              text: "Failed to delete species. Please try again.",
-              icon: "error"
-            });
-            console.error('Error deleting species:', error);
-          }
+        this.isLoading = true;
+        this.speciesFacade.delete(speciesId);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Species has been deleted successfully.",
+          icon: "success"
         });
       }
     });
-  }
+
+    }
 }
