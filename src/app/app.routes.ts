@@ -84,6 +84,10 @@ export const routes: Routes = [
         path: 'competitions',
         component: MemberCompetitionComponent,
       },
+      {
+        path: 'competitions/:id',
+        component: PodiumComponent,
+      },
     ],
     canActivate: [authGuard, roleGuard],
     data: { role: 'MEMBER' }

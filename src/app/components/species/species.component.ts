@@ -1,8 +1,10 @@
 import { ApiService } from '../../services/api.service';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
+import { SpeciesFacade } from '../../store/species';
+
 
 export interface Species {
   id: string;
@@ -22,31 +24,46 @@ export interface Species {
 })
 export class SpeciesComponent implements OnInit {
 
+  private destroy$ = new Subject<void>();
 
   isLoading = false;
-
   species: Species[] = [];
+  error: string | null = null;
 
-  constructor(private api: ApiService) {}
-  getspecies(): Observable<Species[]> {
-    this.isLoading = true;
-    return this.api.get<Species[]>('/species');
-  }
+  constructor(
+    private speciesFacade: SpeciesFacade,
+    private api: ApiService
+  ) {}
 
   ngOnInit() {
-    this.getspecies().subscribe(species => {
-      this.species = species;
-      console.log(species);
-      setTimeout(() => {
-        if (species.length >0) {
-          this.isLoading = false;
-        }
-      }, 500);
 
+    this.speciesFacade.loadAll();
+
+    this.speciesFacade.loading$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(loading => {
+      this.isLoading = loading;
+      console.log('Loading state:', loading);
     });
 
 
+    this.speciesFacade.species$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(data => {
+      this.species = data;
+      console.log('Species data:', data);
+    });
+
+    this.speciesFacade.error$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(error => {
+      this.error = error;
+      if (error) {
+        console.error('Species error:', error);
+      }
+    });
   }
+
 
 
   delete(speciesId: string) {
@@ -59,26 +76,17 @@ export class SpeciesComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
+
       if (result.isConfirmed) {
-        this.api.delete<any>(`/species/${speciesId}`).subscribe({
-          next: () => {
-            this.species = this.species.filter(species => species.id !== speciesId);
-            Swal.fire({
-              title: "Deleted!",
-              text: "Species has been deleted successfully.",
-              icon: "success"
-            });
-          },
-          error: (error) => {
-            Swal.fire({
-              title: "Error!",
-              text: "Failed to delete species. Please try again.",
-              icon: "error"
-            });
-            console.error('Error deleting species:', error);
-          }
+        this.isLoading = true;
+        this.speciesFacade.delete(speciesId);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Species has been deleted successfully.",
+          icon: "success"
         });
       }
     });
-  }
+
+    }
 }
