@@ -1,22 +1,12 @@
-import { ApiService }                                              from '../../../services/api.service';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit }               from '@angular/core';
-import { Router }                                                  from '@angular/router';
-import Swal                                                        from 'sweetalert2';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { CompetitionFacade } from '../../../store/competitions';
+import { Competition } from '../competition.component';
 
-
-
-
-
-export interface Competition {
-  id: string;
-  email: string;
-  cin: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-
-}
 
 @Component({
   selector: 'app-competition-create',
@@ -24,67 +14,72 @@ export interface Competition {
   imports: [ReactiveFormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CompetitionCreateComponent  {
+export class CompetitionCreateComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   competitionForm: FormGroup;
   isLoading = false;
+  error: string | null = null;
 
-  competitions: Competition[] = [];
-
-  constructor( private fb: FormBuilder, private api: ApiService ,  private router: Router) {
-
+  constructor(
+    private fb: FormBuilder,
+    private competitionFacade: CompetitionFacade,
+    private router: Router
+  ) {
     this.competitionForm = this.fb.group({
-      speciesType: ['',[ Validators.required ]],
-      date: ['', [Validators.required ]],
-      code: ['', [Validators.required , Validators.minLength(3)]],
+      speciesType: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      code: ['', [Validators.required, Validators.minLength(3)]],
       openRegistration: ['', [Validators.required]],
-      location: ['',[ Validators.required , Validators.minLength(5)]],
-      minParticipants: ['', [Validators.required , Validators.min(1)]],
+      location: ['', [Validators.required, Validators.minLength(5)]],
+      minParticipants: ['', [Validators.required, Validators.min(1)]],
       maxParticipants: ['', [Validators.required]],
-
     });
-
   }
 
-  get speciesType() { return this.competitionForm.get('speciesType'); }
-  get date() { return this.competitionForm.get('date'); }
-  get code() { return this.competitionForm.get('code'); }
-  get openRegistration() { return this.competitionForm.get('openRegistration'); }
-  get location() { return this.competitionForm.get('location'); }
-  get minParticipants() { return this.competitionForm.get('minParticipants'); }
-  get maxParticipants() { return this.competitionForm.get('maxParticipants'); }
+  ngOnInit(): void {
+  }
 
-
-
-
-  onSubmit() {
+  onSubmit(): void {
     if (this.competitionForm.valid) {
-      const competitionData = this.competitionForm.value;
-      this.api.post<Competition>('/competitions', competitionData).subscribe({
-        next: (newCompetition) => {
-          console.log('competition created:', newCompetition);
-          this.competitions.push(newCompetition);
+      const competitionData: Competition = {
+        ...this.competitionForm.value,
+      };
+      this.isLoading = true;
+      this.competitionFacade.create(competitionData).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: (newCompetition: Competition) => {
+          console.log('Competition created:', newCompetition);
           this.competitionForm.reset();
           Swal.fire({
-            title: "Good job!",
-            text: "competition created successfully",
-            icon: "success"
+            title: 'Good job!',
+            text: 'Competition created successfully.',
+            icon: 'success'
           });
+          this.isLoading = false;
+          this.router.navigate(['/competitions']);
         },
-        error: (err) => {
-
-          if (err?.error?.maxGreaterThanMin) {
-            this.competitionForm.get('maxParticipants')?.setErrors({
-              serverError: err.error.maxGreaterThanMin
-            });
-          }
-          console.error('Error creating competition:', err.error.maxGreaterThanMin);
+        error: (error: any) => {
+          console.error('Error creating competition:', error);
+          this.error = error;
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to create competition. Please try again.',
+            icon: 'error'
+          });
+          this.isLoading = false;
         }
       });
     } else {
       console.error('Form is invalid');
+      this.competitionForm.markAllAsTouched();
     }
   }
 
-
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -3,13 +3,13 @@ import { ActionReducerMap } from '@ngrx/store';
 import { speciesReducer, SpeciesState } from './species/species.reducer';
 import { userReducer, UserState } from './users';
 
+import { competitionReducer } from './competitions';
+import { AppState } from './app.state';
 
-export interface AppState {
-  species: SpeciesState;
-  user: UserState;
-}
+
 
 export const reducers: ActionReducerMap<AppState> = {
   species: speciesReducer,
-  user: userReducer,
+  member: userReducer,
+  competitions: competitionReducer
 };

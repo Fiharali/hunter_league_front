@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Species } from '../../models/species.module';
 import * as SpeciesActions from './species.actions';
-import * as SpeciesSelectors from './species.selectors';
+  import * as SpeciesSelectors from './species.selectors';
 
 
 @Injectable({

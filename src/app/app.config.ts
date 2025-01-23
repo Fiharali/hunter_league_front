@@ -13,6 +13,7 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { SpeciesEffects } from './store/species/species.effects';
 import { UserEffects } from './store/users/user.effects';
+import { CompetitionEffects } from './store/competitions/competition.effects';
 
 
 export const appConfig: ApplicationConfig = {
@@ -28,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       reducers
     ),
 
-    provideEffects([SpeciesEffects , UserEffects]),
+    provideEffects([SpeciesEffects , UserEffects ,CompetitionEffects]),
 
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(withEventReplay())
