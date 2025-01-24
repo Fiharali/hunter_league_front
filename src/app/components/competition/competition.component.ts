@@ -1,12 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { RouterModule }                              from '@angular/router';
-import { ApiService }                                from '../../services/api.service';
-import { Observable }                                from 'rxjs';
-import Swal                                          from 'sweetalert2';
-import { CommonModule }                              from '@angular/common';
-
-
-
+import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { CompetitionFacade } from '../../store/competitions/competition.facade';
 
 export interface Competition {
   id: string;
@@ -17,80 +14,56 @@ export interface Competition {
   location: string;
 }
 
-export interface PageableResponse {
-  content: Competition[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-  size: number;
-  number: number;
-  sort: {
-    empty: boolean;
-    sorted: boolean;
-    unsorted: boolean;
-  };
-  first: boolean;
-  numberOfElements: number;
-  empty: boolean;
-}
-
 @Component({
   selector: 'app-competition',
   templateUrl: './competition.component.html',
   styleUrls: ['./competition.component.css'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [RouterModule, CommonModule]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA
+  ],
+  imports: [RouterModule]
 })
-export class CompetitionComponent implements OnInit {
+export class CompetitionComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
+
   isLoading = false;
   competitions: Competition[] = [];
-  currentPage = 0;
-  totalPages = 0;
-  totalElements = 0;
+  error: string | null = null;
 
-  constructor(private api: ApiService) {}
+  constructor(private competitionFacade: CompetitionFacade) {}
 
-  getCompetitions(): Observable<PageableResponse> {
-    this.isLoading = true;
-    return this.api.get<PageableResponse>('/competitions');
+  ngOnInit(): void {
+    this.loadCompetitions();
+
+    this.competitionFacade.loading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(loading => {
+        this.isLoading = loading;
+        console.log('Loading state:', loading);
+      });
+
+    this.competitionFacade.competition$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        this.competitions = data;
+        console.log('Competitions data:', data);
+      });
+
+    this.competitionFacade.error$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(error => {
+        this.error = error;
+        if (error) {
+          console.error('Competitions error:', error);
+        }
+      });
   }
 
-  ngOnInit() {
-    this.getCompetitions().subscribe({
-      next: (response: PageableResponse) => {
-        this.competitions = response.content;
-        this.totalPages = response.totalPages;
-        this.totalElements = response.totalElements;
-        this.currentPage = response.number;
-
-        console.log(response.content);
-
-        setTimeout(() => {
-          if (response.content.length > 0) {
-            this.isLoading = false;
-          }
-        }, 500);
-      },
-      error: (error) => {
-        console.error('Error fetching competitions:', error);
-        this.isLoading = false;
-      }
-    });
+  private loadCompetitions(): void {
+    this.competitionFacade.loadAll();
   }
 
-  delete(competitionId: string) {
+  delete(competitionId: string): void {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -101,25 +74,20 @@ export class CompetitionComponent implements OnInit {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.api.delete<any>(`/competitions/${competitionId}`).subscribe({
-          next: () => {
-            this.competitions = this.competitions.filter(competition => competition.id !== competitionId);
-            Swal.fire({
-              title: "Deleted!",
-              text: "Competition has been deleted successfully.",
-              icon: "success"
-            });
-          },
-          error: (error) => {
-            Swal.fire({
-              title: "Error!",
-              text: "Failed to delete competition. Please try again.",
-              icon: "error"
-            });
-            console.error('Error deleting competition:', error);
-          }
+        this.isLoading = true;
+        this.competitionFacade.delete(competitionId);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Competition has been deleted successfully.",
+          icon: "success"
         });
+        this.isLoading = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

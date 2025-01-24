@@ -1,3 +1,4 @@
+import { reducers } from './store/app.reducer';
 import { initialState, speciesReducer } from './store/species/species.reducer';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -11,6 +12,9 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { SpeciesEffects } from './store/species/species.effects';
+import { UserEffects } from './store/users/user.effects';
+import { CompetitionEffects } from './store/competitions/competition.effects';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,11 +25,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authInterceptor])
     ),
-    provideStore({
-      species: speciesReducer
-    }),
-    
-    provideEffects([SpeciesEffects]),
+    provideStore(
+      reducers
+    ),
+
+    provideEffects([SpeciesEffects , UserEffects ,CompetitionEffects]),
 
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideClientHydration(withEventReplay())

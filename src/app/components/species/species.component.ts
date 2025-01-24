@@ -87,6 +87,5 @@ export class SpeciesComponent implements OnInit {
         });
       }
     });
-
     }
 }

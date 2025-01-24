@@ -34,6 +34,13 @@ export const routes: Routes = [
     component: LoginComponent,
     canActivate: [redirectIfAuthenticatedGuard],
   },
+
+  {
+    path :"",
+    redirectTo:"/admin",
+    pathMatch: 'full'
+  }
+  ,
   {
     path: 'admin',
     component: AdminLayoutComponent,

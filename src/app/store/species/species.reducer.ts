@@ -17,7 +17,7 @@ export const initialState: SpeciesState = {
 };
 
 
-export const speciesReducer = createReducer(
+export const  speciesReducer = createReducer(
   initialState,
 
   on(SpeciesActions.loadSpecies, state => ({
